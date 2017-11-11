@@ -35,10 +35,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import com.google.common.collect.ImmutableMap;
 import com.netflix.hystrix.exception.HystrixRuntimeException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -557,8 +557,9 @@ public class FeignClientTests {
 
 	@Test(expected = HystrixRuntimeException.class)
 	public void testHeaderMapIsIgnoredAndHeadersAreAddedInBody() throws Exception {
-		ImmutableMap<String, String> map = ImmutableMap
-				.of("key", "value");
+		HashMap map = new HashMap() {{
+			put("key", "value");
+		}};
 		ResponseEntity<Map> responseEntity = this.testClient.ignoredHeaderMap(map);
 		assertThat(responseEntity.getStatusCode(), is(HttpStatus.METHOD_NOT_ALLOWED));
 	}
